@@ -43,6 +43,7 @@ class Book(Base):
     id: Mapped[intpk]
     title: Mapped[str] = mapped_column(String(255), nullable=False, index=True)
     author: Mapped[str] = mapped_column(String(255), nullable=False, index=True)
+    description: Mapped[str] = mapped_column(String(255), nullable=True)
     published_year: Mapped[int] = mapped_column(nullable=True)
     isbn: Mapped[str] = mapped_column(String(255), unique=True, nullable=True, index=True)
     quantity: Mapped[int] = mapped_column(CheckConstraint("quantity >= 0"), nullable=False, default=1)

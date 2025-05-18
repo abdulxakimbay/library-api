@@ -75,7 +75,7 @@ async def authenticate_user(email: EmailStr, password: str, session: AsyncSessio
 # ENDPOINTS
 ####################################################################################################
 
-@router.post("/sign-up")
+@router.post("/sign-up", response_model=Tokens, status_code=status.HTTP_201_CREATED)
 async def sign_up(data: LibrarianCreate, session: AsyncSession = Depends(get_session)) -> Tokens:
     result = await session.execute(select(Librarian).where(Librarian.email == data.email))
     user: Librarian | None = result.scalar_one_or_none()
@@ -93,7 +93,7 @@ async def sign_up(data: LibrarianCreate, session: AsyncSession = Depends(get_ses
     return Tokens(refresh_token=refresh_token, access_token=access_token)
 
 
-@router.post("/sign-in")
+@router.post("/sign-in", response_model=Tokens, status_code=status.HTTP_200_OK)
 async def sign_in(data: LibrarianLogin, session: AsyncSession = Depends(get_session)) -> Tokens:
     incorrect_credentials = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
@@ -107,7 +107,7 @@ async def sign_in(data: LibrarianLogin, session: AsyncSession = Depends(get_sess
     return Tokens(refresh_token=refresh_token, access_token=access_token)
 
 
-@router.post("/token")
+@router.post("/token", response_model=AccessToken, status_code=status.HTTP_200_OK)
 async def login_for_access_token(refresh_token: RefreshToken) -> AccessToken:
     invalid_credentials = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,

@@ -12,7 +12,7 @@ from .config import settings
 # SETTINGS
 ####################################################################################################
 
-engine = create_async_engine(settings.get_db_url, echo=True)
+engine = create_async_engine(settings.get_db_url, echo=False)
 SessionFactory = async_sessionmaker(engine, expire_on_commit=False)
 Base = declarative_base()
 
